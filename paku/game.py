@@ -7,13 +7,13 @@ import pyxel
 import random
 
 
-class App:
+class Game:
     def __init__(self):
         pyxel.init(utils.WIDTH, utils.HEIGHT, caption="Project Paku", fps=30)
         pyxel.mouse(True)       
         self.delay = 0
 
-        self.gamestate = GameState()
+        # self.gamestate = GameState()
 
         self.g = graph.Graph()
         self.tree = graph.Graph()
@@ -43,7 +43,7 @@ class App:
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
-        gamestate.update()
+        # gamestate.update()
 
 
     def draw(self):
@@ -64,4 +64,4 @@ class App:
 
         if(self.delay!=len(self.edges)-1):
             self.delay += 1
-App()
+Game()
