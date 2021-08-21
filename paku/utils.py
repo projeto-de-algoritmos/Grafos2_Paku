@@ -13,16 +13,16 @@ def rect_custom(x1, y1, x2, y2, color):
 
     pyxel.rect(x1, y1, x2-x1, y2-y1, color)
 
-def coord(x, y):
+def coord_str(x, y):
     return (str(x) + "-" + str(y))
 
-def coord_convert(coord):
+def coord_int(coord):
     st = coord.split("-")
     return [int(st[0]), int(st[1])]
 
 def cave_paint(current, bro):
-    current_pos = coord_convert(current)
-    bro_pos = coord_convert(bro)
+    current_pos = coord_int(current)
+    bro_pos = coord_int(bro)
 
     x1 = current_pos[0]*15+1
     y1 = current_pos[1]*15+1

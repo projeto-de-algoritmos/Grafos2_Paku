@@ -1,0 +1,17 @@
+- aplica func de pintar celula de outra cor
+- cria lista de cell disponiveis
+- adiciona a pilha
+- verifica quais ao redor estão e add a lista
+- se a lista > 0
+	- escolhe uma celula aleatoriamente
+	- a celula escolhida
+	- aplica a função de pintar
+	- add no dict de solução
+		- new_cell : current_cell 	
+	- atualiza current_cell
+	- adciona a lista de visitados
+	- adciona a pilha
+- senão
+	- pop da stack() //volta a celula anterior
+	- func pintar celula mostra backtraking // avisa sobre backtracking
+	- muda cor pra outra identifica backtraking
