@@ -12,6 +12,7 @@ def rect_custom(x1, y1, x2, y2, color):
         y1, y2 = y2, y1
 
     pyxel.rect(x1, y1, x2-x1, y2-y1, color)
+    # pyxel.pset(x1, y1, x2-x1, y2-y1, color)
 
 def coord_str(x, y):
     return (str(x) + "-" + str(y))

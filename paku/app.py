@@ -13,6 +13,8 @@ class App:
         pyxel.mouse(True)       
         self.delay = 0
 
+        self.gamestate = GameState()
+
         self.g = graph.Graph()
         self.tree = graph.Graph()
         self.edges = []
@@ -41,6 +43,8 @@ class App:
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
+        gamestate.update()
+
 
     def draw(self):
         pyxel.cls(0)
@@ -50,6 +54,10 @@ class App:
 
         for i in range(0, 14):
             pyxel.line(0, 15*i, utils.WIDTH, 15*i, 7)
+            
+        for i in range(1, 17):
+            for j in range(1, 13):
+                pyxel.pset(15*i, 15*j, 8)
         
         for i in range(0, self.delay+1):
             utils.cave_paint(self.edges[i][0], self.edges[i][1])
