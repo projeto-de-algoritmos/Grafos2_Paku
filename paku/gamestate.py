@@ -1,11 +1,13 @@
 import utils
 import prim
 import player
+import ghost
 
 import pyxel
 import random
 
 player1 = player.Player()
+blinky = ghost.Blinky()
 
 class GameState:
     def __init__(self):
@@ -48,6 +50,7 @@ class GameState:
 
         elif(self.state == "run"):
             player1.update()
+            blinky.update()
         elif(self.state == "game_over"):
             ...
 
@@ -66,6 +69,9 @@ class GameState:
                 for i in range(0, utils.delay+1):
                     utils.cave_paint(utils.edges[i][0], utils.edges[i][1])
 
+            player1.draw()
+            blinky.draw()
+
         elif(self.state == "run"):
             utils.draw_grid()
 
@@ -73,6 +79,7 @@ class GameState:
                 utils.cave_paint(utils.edges[i][0], utils.edges[i][1])
             
             player1.draw()
+            blinky.draw()
 
         elif(self.state == "game_over"):
             ...
