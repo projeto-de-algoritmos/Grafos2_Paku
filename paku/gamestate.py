@@ -1,8 +1,11 @@
 import utils
 import prim
+import player
 
 import pyxel
 import random
+
+player1 = player.Player()
 
 class GameState:
     def __init__(self):
@@ -33,6 +36,9 @@ class GameState:
             # if menu var ...
             start = utils.coord_str(random.randint(0, 16), random.randint(0, 12))
             utils.tree, utils.edges = prim.prim_maze(utils.g, start, utils.edges)
+
+            player1.atNode = utils.g.get_node("0-0")
+
             self.state = "prim"
                 
         elif(self.state == "prim"):
@@ -43,7 +49,7 @@ class GameState:
                 self.state = "run"
 
         elif(self.state == "run"):
-            ...
+            player1.update()
         elif(self.state == "game_over"):
             ...
 
@@ -67,6 +73,8 @@ class GameState:
 
             for i in range(0, len(utils.edges)):
                 utils.cave_paint(utils.edges[i][0], utils.edges[i][1])
+            
+            player1.draw()
 
         elif(self.state == "game_over"):
             ...

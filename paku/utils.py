@@ -1,4 +1,5 @@
 import graph
+# import player
 
 import pyxel
 
@@ -8,7 +9,8 @@ HEIGHT = 196
 g = graph.Graph()
 tree = graph.Graph()
 edges = []
-delay = 0
+delay = 220
+
 
 def draw_grid():
     for i in range(0, 18):
@@ -38,6 +40,29 @@ def coord_str(x, y):
 def coord_int(coord):
     st = coord.split("-")
     return [int(st[0]), int(st[1])]
+
+def get_close_node(node: graph.Node, direction):
+    coords = coord_int(node.get_id())
+
+    bro_node = None
+
+    if(direction == "up"):
+        if(coords[1] != 0):
+            bro_node = g.get_node(coord_str(coords[0], coords[1]-1))
+
+    elif(direction == "left"):
+        if(coords[0] != 0):
+            bro_node = g.get_node(coord_str(coords[0]-1, coords[1]))
+            
+    elif(direction == "down"):
+        if(coords[1] != 12):
+            bro_node = g.get_node(coord_str(coords[0], coords[1]+1))
+            
+    elif(direction == "right"):
+        if(coords[0] != 16):
+            bro_node = g.get_node(coord_str(coords[0]+1, coords[1]))
+    
+    return bro_node.get_id()
 
 def cave_paint(current, bro):
     current_pos = coord_int(current)
