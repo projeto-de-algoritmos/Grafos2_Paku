@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-# import graph
->>>>>>> 33935f0230642d337e9b0765c73e6dd5b7fd70d7
 import utils
 
 import pyxel
