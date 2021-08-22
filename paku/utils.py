@@ -1,7 +1,25 @@
+import graph
+
 import pyxel
 
 WIDTH = 256
 HEIGHT = 196
+
+g = graph.Graph()
+tree = graph.Graph()
+edges = []
+delay = 0
+
+def draw_grid():
+    for i in range(0, 18):
+        pyxel.line(15*i, 0, 15*i, HEIGHT, 7)
+
+    for i in range(0, 14):
+        pyxel.line(0, 15*i, WIDTH, 15*i, 7)
+        
+    for i in range(1, 17):
+        for j in range(1, 13):
+            pyxel.pset(15*i, 15*j, 8)
 
 def rect_custom(x1, y1, x2, y2, color):
 
@@ -38,6 +56,7 @@ def cave_paint(current, bro):
         y1 += 14
 
     rect_custom(x1, y1, x2, y2, 8)
+
 
 # DEBUG
 
