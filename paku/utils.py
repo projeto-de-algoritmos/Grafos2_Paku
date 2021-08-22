@@ -9,8 +9,13 @@ HEIGHT = 196
 g = graph.Graph()
 tree = graph.Graph()
 edges = []
-delay = 0
+delay = 220
 
+def get_node_in_grid(x, y):
+    gx = x//15
+    gy = y//15
+
+    return g.get_node(coord_str(gx, gy))
 
 def draw_grid():
     for i in range(0, 18):

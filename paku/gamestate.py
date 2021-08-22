@@ -37,8 +37,6 @@ class GameState:
             start = utils.coord_str(random.randint(0, 16), random.randint(0, 12))
             utils.tree, utils.edges = prim.prim_maze(utils.g, start, utils.edges)
 
-            player1.atNode = utils.g.get_node("0-0")
-
             self.state = "prim"
                 
         elif(self.state == "prim"):

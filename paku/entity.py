@@ -2,8 +2,8 @@ import utils
 
 class Entity:
     def __init__(self) -> None:
-        self.posX = 8
-        self.posY = 8
+        self.posX = 0
+        self.posY = 0
         self.atNode = None
         self.canTurn = True
         self.facing = None
