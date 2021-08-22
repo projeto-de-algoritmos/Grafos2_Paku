@@ -13,9 +13,6 @@ class Player:
         self.facing = "right"
 
     def update(self):
-
-        print(f"pos x: {self.posX}, calc: {(self.posX+7)%15}")
-        print(f"pos y: {self.posY}, calc: {(self.posY+7)%15}")
         if (self.posX+7)%15 == 0 and (self.posY+7)%15 == 0:
             self.canTurn = True
             x = ((self.posX+7)//15) - 1
@@ -23,7 +20,6 @@ class Player:
             self.atNode = utils.g.get_node(utils.coord_str(x, y))
 
         else:
-            print("nao po virar")
             self.canTurn = False
         
         if self.isAlive and self.canTurn:
@@ -50,12 +46,10 @@ class Player:
 
         go = True
         if self.canTurn == True:
-
             close_node = utils.get_close_node(self.atNode, self.facing)
             if (self.atNode.get_id(), close_node) not in utils.edges and (close_node, self.atNode.get_id()) not in utils.edges:
                 go = False
 
-        print(f"go: {go}")
         if go:
             if self.facing == "down":
                 self.posY += 1
