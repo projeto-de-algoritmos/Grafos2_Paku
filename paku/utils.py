@@ -7,7 +7,7 @@ WIDTH = 256
 HEIGHT = 196
 
 g = graph.Graph()
-tree = graph.Graph()
+path = graph.Graph()
 edges = []
 delay = 220
 

@@ -37,7 +37,7 @@ class GameState:
 
             # if menu var ...
             start = utils.coord_str(random.randint(0, 16), random.randint(0, 12))
-            utils.tree, utils.edges = prim.prim_maze(utils.g, start, utils.edges)
+            utils.path, utils.edges = prim.prim_maze(utils.g, start, utils.edges)
 
             self.state = "prim"
                 
@@ -50,7 +50,7 @@ class GameState:
 
         elif(self.state == "run"):
             player1.update()
-            blinky.update()
+            blinky.update(player1.atNode)
         elif(self.state == "game_over"):
             ...
 
@@ -71,7 +71,7 @@ class GameState:
 
             player1.draw()
             blinky.draw()
-
+            
         elif(self.state == "run"):
             utils.draw_grid()
 

@@ -10,13 +10,14 @@ def buildTree(g, tree, edges):
             tree.add_node(utils.coord_str(i, j))
 
     for edge in edges:
-        tree.add_edge(edge[0], edge[1], 0)
+        tree.add_edge(edge[0], edge[1], 1)
 
-def breakWalls(tree: graph.Graph, edges):
+
+def breakWalls(path: graph.Graph, edges):
 
     for i in range(0, 17):
         for j in range(0, 13):
-            node = tree.node_dict[utils.coord_str(i, j)]
+            node = path.node_dict[utils.coord_str(i, j)]
 
 
             if len(node.get_bros()) == 1:
@@ -48,20 +49,20 @@ def breakWalls(tree: graph.Graph, edges):
                 side.remove(s)
 
                 if s == 1: # DIREITA
-                    next_node = tree.get_node(utils.coord_str(coords[0]+1, coords[1]))
+                    next_node = path.get_node(utils.coord_str(coords[0]+1, coords[1]))
                 elif s == 2: # BAIXO
-                    next_node = tree.get_node(utils.coord_str(coords[0], coords[1]+1))
+                    next_node = path.get_node(utils.coord_str(coords[0], coords[1]+1))
                 elif s == 3: # ESQUERDA
-                    next_node = tree.get_node(utils.coord_str(coords[0]-1, coords[1]))
+                    next_node = path.get_node(utils.coord_str(coords[0]-1, coords[1]))
                 elif s == 4: # CIMA
-                    next_node = tree.get_node(utils.coord_str(coords[0], coords[1]-1))
+                    next_node = path.get_node(utils.coord_str(coords[0], coords[1]-1))
 
-                tree.add_edge(node, next_node, 0)
+                path.add_edge(node.get_id(), next_node.get_id(), 0)
                 edges.append((node.get_id(), next_node.get_id()))
 
 
 def prim_maze(g, start, edges):
-    tree = graph.Graph()
+    path = graph.Graph()
     edges = []
     candidatas = []
     visited = []
@@ -79,7 +80,7 @@ def prim_maze(g, start, edges):
             for bro in g.node_dict[current].get_bros():
                 heapq.heappush(candidatas,(g.node_dict[current].get_weight(bro), (current, bro.get_id())))
                 
-    buildTree(g, tree, edges)
-    breakWalls(tree, edges)
+    buildTree(g, path, edges)
+    breakWalls(path, edges)
 
-    return tree, edges
+    return path, edges
