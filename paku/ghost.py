@@ -27,7 +27,7 @@ class Ghost(Entity):
         pyxel.pset(self.posX-2, self.posY-1, 0)
         pyxel.pset(self.posX+2, self.posY-1, 0)
 
-        # Código para ver o caminho encontrado pelo Dijkstra
+        # Código para desenhar o caminho encontrado pelo Dijkstra
         for i in self.gost_path:
             pos = utils.coord_int(i)
             pyxel.circ(pos[0]*15+7, pos[1]*15+7, 2, 11)
@@ -60,10 +60,7 @@ class Blinky(Ghost):
         # if self.canTurn:
         #     dir = ["up", "down", "right", "left"]
 
-        #     if self.facing == "up": dir.remove("down")
-        #     elif self.facing == "left": dir.remove("right")
-        #     elif self.facing == "down": dir.remove("up")
-        #     elif self.facing == "right": dir.remove("left")
+        #     new_dir.remove(utils.inv_dir(self.facing))
 
         #     choice = random.choice(dir)
         #     self.turn(choice)
@@ -72,27 +69,30 @@ class Blinky(Ghost):
             next_node = utils.coord_int(self.gost_path[-1])
             ghost_node = utils.coord_int(self.atNode.get_id())
 
+            back = utils.inv_dir(self.facing)
             dir = self.facing
 
+            new_dir = ["up", "down", "left", "right"]
+            new_dir.remove(back)
+
             if ghost_node[0] > next_node[0]:
-                if self.facing != "right":
                     dir = "left"
             elif ghost_node[0] < next_node[0]:
-                if self.facing != "left":
                     dir = "right"
             elif ghost_node[1] > next_node[1]:
-                if self.facing != "down":
                     dir = "up"
             elif ghost_node[1] < next_node[1]:
-                if self.facing != "up":
                     dir = "down"
 
-            self.turn(dir)
+            if dir == back:
+                self.turn(random.choice(new_dir))
+            else:
+                self.turn(dir)
 
         self.move()
 
     def calc_target(self, player_node):
-        visited = [] #Nós visitados
+        visited = [] # Nós visitados
         end = player_node.get_id()
         current = self.atNode.get_id()
         pq  = []

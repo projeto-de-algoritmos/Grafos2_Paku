@@ -2,16 +2,19 @@ import utils
 import prim
 import player
 import ghost
+import pellets
 
 import pyxel
 import random
 
 player1 = player.Player()
 blinky = ghost.Blinky()
+pellets_list = pellets.Pellets()
 
 class GameState:
     def __init__(self):
         self.state = "menu"
+        self.points = 0
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_Q):
@@ -20,6 +23,9 @@ class GameState:
         if(self.state == "menu"):
             ...
         if(self.state == "start"):
+
+            pellets_list.fill_dict()
+
             for i in range(0, 17):
                 for j in range(0, 13):
                     utils.g.add_node(utils.coord_str(i, j))
@@ -39,6 +45,7 @@ class GameState:
             start = utils.coord_str(random.randint(0, 16), random.randint(0, 12))
             utils.path, utils.edges = prim.prim_maze(utils.g, start, utils.edges)
 
+
             self.state = "prim"
                 
         elif(self.state == "prim"):
@@ -51,6 +58,16 @@ class GameState:
         elif(self.state == "run"):
             player1.update()
             blinky.update(player1.atNode)
+
+            pos = utils.get_pos_in_grid(player1.posX, player1.posY)
+            pellet = pellets_list.pellets_dict.get(pos)
+            if pellet != None:
+                if pellet == 2:
+                    ...
+                    # ghost = frightened
+                pellets_list.pellets_dict.pop(pos)
+                player1.points += 1
+            
         elif(self.state == "game_over"):
             ...
 
@@ -68,9 +85,12 @@ class GameState:
             if utils.edges != []:
                 for i in range(0, utils.delay+1):
                     utils.cave_paint(utils.edges[i][0], utils.edges[i][1])
-
+            
+            pellets_list.draw()
             player1.draw()
             blinky.draw()
+
+
             
         elif(self.state == "run"):
             utils.draw_grid()
@@ -78,6 +98,8 @@ class GameState:
             for i in range(0, len(utils.edges)):
                 utils.cave_paint(utils.edges[i][0], utils.edges[i][1])
             
+            pyxel.text(utils.WIDTH-40, utils.HEIGHT-20, f'PONTOS: {player1.points}', 7)
+            pellets_list.draw()
             player1.draw()
             blinky.draw()
 

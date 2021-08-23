@@ -5,17 +5,41 @@ import pyxel
 
 WIDTH = 256
 HEIGHT = 196
+GRID_WIDTH = 17
+GRID_HEIGHT = 13
+
 
 g = graph.Graph()
 path = graph.Graph()
 edges = []
 delay = 220
 
+def inv_dir(dir):
+    new_dir = ""
+    if dir == "right": new_dir = "left"
+    elif dir == "left": new_dir = "right"
+    elif dir == "up": new_dir = "down"
+    elif dir == "down": new_dir = "up"
+
+    return new_dir
+
+def align_in_grid(x):
+    return x*15+7
+
 def get_node_in_grid(x, y):
+    '''
+        Recebe a posição na tela e retorna um String da posição no Grid
+    '''
     gx = x//15
     gy = y//15
 
     return g.get_node(coord_str(gx, gy))
+
+def get_pos_in_grid(x, y):
+    gx = x//15
+    gy = y//15
+
+    return (gx, gy)
 
 def draw_grid():
     for i in range(0, 18):

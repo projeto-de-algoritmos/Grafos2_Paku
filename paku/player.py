@@ -10,7 +10,7 @@ class Player(Entity):
         self.posY = 98
         self.isAlive = True
         self.facing = "right"
-
+        self.points = 0
     def update(self):
         self.atNode = utils.get_node_in_grid(self.posX, self.posY)
         

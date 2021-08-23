@@ -4,7 +4,7 @@ import graph
 import heapq
 import random
 
-def buildTree(g, tree, edges):
+def buildTree(tree, edges):
     for i in range(0, 17):
         for j in range(0, 13):
             tree.add_node(utils.coord_str(i, j))
@@ -80,7 +80,7 @@ def prim_maze(g, start, edges):
             for bro in g.node_dict[current].get_bros():
                 heapq.heappush(candidatas,(g.node_dict[current].get_weight(bro), (current, bro.get_id())))
                 
-    buildTree(g, path, edges)
+    buildTree(path, edges)
     breakWalls(path, edges)
 
     return path, edges
