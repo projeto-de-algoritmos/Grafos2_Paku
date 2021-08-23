@@ -26,18 +26,21 @@ class Entity:
             if self.facing == "left":
                 self.posX -= 1
             
-    def check_move(self, direction):
-        close_node = utils.get_close_node(self.atNode, direction)
-        if (self.atNode.get_id(), close_node) in utils.edges or (close_node, self.atNode.get_id()) in utils.edges :
-            go = True
-        else:
-            go = False
+    def directions(self):
+        dir_list = ["up", "down", "right", "left"]
+        valids_dir = []
+        dir_list.remove(utils.inv_dir(self.facing))
 
-        return go 
+        for dir in dir_list:
+            close_node = utils.get_close_node(self.atNode, dir)
+
+            if (self.atNode.get_id(), close_node) in utils.edges or (close_node, self.atNode.get_id()) in utils.edges:
+                valids_dir.append(dir)
+
+        return valids_dir
 
     def turn(self, direction):
         if self.canTurn == True:
-            # if self.check_move:
             close_node = utils.get_close_node(self.atNode, direction)
             if (self.atNode.get_id(), close_node) in utils.edges or (close_node, self.atNode.get_id()) in utils.edges :
                 self.facing = direction

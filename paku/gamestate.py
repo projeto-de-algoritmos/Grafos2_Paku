@@ -1,14 +1,22 @@
 import utils
 import prim
 import player
-import ghost
 import pellets
+
+from blinky import Blinky 
+from clyde import Clyde
+from pinky import Pinky
+from inky import Inky
 
 import pyxel
 import random
 
 player1 = player.Player()
-blinky = ghost.Blinky()
+ghosts = []
+ghosts.append(Blinky(0, 0))
+ghosts.append(Inky(0, utils.GRID_HEIGHT-1))
+ghosts.append(Pinky(utils.GRID_WIDTH-1, 0))
+ghosts.append(Clyde(utils.GRID_WIDTH-1, utils.GRID_HEIGHT-1))
 pellets_list = pellets.Pellets()
 
 class GameState:
@@ -59,26 +67,36 @@ class GameState:
 
         elif(self.state == "run"):
             player1.update()
-            blinky.update(player1.atNode)
+            (player1.atNode)
+
+            ghosts[1].blinky_pos = [ghosts[0].posX, ghosts[0].posY]
+            for ghost in ghosts:
+                ghost.update(player1.atNode, player1.facing)
 
             # PLAYER PELLET COLISÃO
             player_pos = utils.get_pos_in_grid(player1.posX, player1.posY)
             pellet = pellets_list.pellets_dict.get(player_pos)
             if pellet != None:
                 if pellet == 2:
-                    player1.points += 9
-                    blinky.change_state("frightened")
+                    player1.points += 40
+                    
+                    for ghost in ghosts:
+                        if ghost.state != "eaten":
+                            ghost.change_state("frightened")
+                        
                 pellets_list.pellets_dict.pop(player_pos)
-                player1.points += 1
+                player1.points += 10
 
             # PLAYER GHOST COLISÃO
-            if player1.atNode == blinky.atNode:
-                if blinky.state == "chase":
-                    player1.isAlive = False
-                    self.state = "game_over"
-                elif blinky.state == "frightened":
-                    blinky.change_state("eaten")
-                
+            for ghost in ghosts:
+                if player1.atNode.get_id() == ghost.atNode.get_id():
+                    if ghost.state == "chase":
+                        player1.isAlive = False
+                        self.state = "game_over"
+                    elif ghost.state == "frightened":
+                        player1.points += 100
+                        ghost.change_state("eaten")
+                    
             
         elif(self.state == "game_over"):
             ...
@@ -100,7 +118,9 @@ class GameState:
             
             pellets_list.draw()
             player1.draw()
-            blinky.draw()
+
+            for ghost in ghosts:
+                ghost.draw()
 
 
             
@@ -110,10 +130,12 @@ class GameState:
             for i in range(0, len(utils.edges)):
                 utils.cave_paint(utils.edges[i][0], utils.edges[i][1])
             
-            pyxel.text(utils.WIDTH-40, utils.HEIGHT-10, f'PONTOS: {player1.points}', 7)
+            pyxel.text(utils.WIDTH-60, utils.HEIGHT-10, f'PONTOS: {player1.points}', 7)
             pellets_list.draw()
             player1.draw()
-            blinky.draw()
+            
+            for ghost in ghosts:
+                ghost.draw()
 
         elif(self.state == "game_over"):
             pyxel.text(utils.WIDTH/2, utils.HEIGHT/2, f'PONTOS: {player1.points}', 7)
