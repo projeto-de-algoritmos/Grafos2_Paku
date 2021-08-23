@@ -59,14 +59,24 @@ class GameState:
             player1.update()
             blinky.update(player1.atNode)
 
-            pos = utils.get_pos_in_grid(player1.posX, player1.posY)
-            pellet = pellets_list.pellets_dict.get(pos)
+            # PLAYER PELLET COLISÃO
+            player_pos = utils.get_pos_in_grid(player1.posX, player1.posY)
+            pellet = pellets_list.pellets_dict.get(player_pos)
             if pellet != None:
                 if pellet == 2:
-                    ...
-                    # ghost = frightened
-                pellets_list.pellets_dict.pop(pos)
+                    player1.points += 9
+                    blinky.change_state("frightened")
+                pellets_list.pellets_dict.pop(player_pos)
                 player1.points += 1
+
+            # PLAYER GHOST COLISÃO
+            if player1.atNode == blinky.atNode:
+                if blinky.state == "chase":
+                    player1.isAlive = False
+                    self.state = "game_over"
+                elif blinky.state == "frightened":
+                    blinky.change_state("eaten")
+                
             
         elif(self.state == "game_over"):
             ...
@@ -104,5 +114,7 @@ class GameState:
             blinky.draw()
 
         elif(self.state == "game_over"):
-            ...
+            pyxel.text(utils.WIDTH/2, utils.HEIGHT/2, f'PONTOS: {player1.points}', 7)
+            pyxel.text(utils.WIDTH/2, utils.HEIGHT/2-20, 'GAME OVER', 7)
+            
 
