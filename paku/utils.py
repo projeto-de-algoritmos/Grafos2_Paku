@@ -6,7 +6,7 @@ import pyxel
 WIDTH = 256
 HEIGHT = 196
 GRID_WIDTH = 17
-GRID_HEIGHT = 13
+GRID_HEIGHT = 12
 
 
 g = graph.Graph()
@@ -42,14 +42,14 @@ def get_pos_in_grid(x, y):
     return (gx, gy)
 
 def draw_grid():
-    for i in range(0, 18):
-        pyxel.line(15*i, 0, 15*i, HEIGHT, 5)
+    for i in range(0, GRID_WIDTH+1):
+        pyxel.line(15*i, 0, 15*i, GRID_HEIGHT*15, 5)
 
-    for i in range(0, 14):
-        pyxel.line(0, 15*i, WIDTH, 15*i, 5)
+    for i in range(0, GRID_HEIGHT+1):
+        pyxel.line(0, 15*i, GRID_WIDTH*15, 15*i, 5)
         
-    for i in range(1, 17):
-        for j in range(1, 13):
+    for i in range(1, GRID_WIDTH):
+        for j in range(1, GRID_HEIGHT):
             pyxel.pset(15*i, 15*j, 0)
 
 def rect_custom(x1, y1, x2, y2, color):
@@ -83,11 +83,11 @@ def get_close_node(node: graph.Node, direction):
             bro_node = g.get_node(coord_str(coords[0]-1, coords[1]))
             
     elif(direction == "down"):
-        if(coords[1] != 12):
+        if(coords[1] != GRID_HEIGHT-1):
             bro_node = g.get_node(coord_str(coords[0], coords[1]+1))
             
     elif(direction == "right"):
-        if(coords[0] != 16):
+        if(coords[0] != GRID_WIDTH-1):
             bro_node = g.get_node(coord_str(coords[0]+1, coords[1]))
     
     return bro_node.get_id()
@@ -95,6 +95,9 @@ def get_close_node(node: graph.Node, direction):
 def cave_paint(current, bro):
     current_pos = coord_int(current)
     bro_pos = coord_int(bro)
+
+    # print(current_pos)
+    # print(bro_pos)
 
     x1 = current_pos[0]*15+1
     y1 = current_pos[1]*15+1
@@ -109,6 +112,44 @@ def cave_paint(current, bro):
         y1 += 14
 
     rect_custom(x1, y1, x2, y2, 0)
+
+def mirror():
+
+    new_path = graph.Graph()
+
+    for i in range(0, GRID_WIDTH):
+        for j in range(0, GRID_HEIGHT):
+            new_path.add_node(coord_str(i, j))
+
+    for i in range(9, GRID_WIDTH):
+        for j in range(0, GRID_HEIGHT):
+            if (coord_str(i, j), coord_str(i+1, j)) in edges: edges.remove((coord_str(i, j), coord_str(i+1, j)))
+            if (coord_str(i, j), coord_str(i-1, j)) in edges: edges.remove((coord_str(i, j), coord_str(i-1, j)))
+            if (coord_str(i, j), coord_str(i, j+1)) in edges: edges.remove((coord_str(i, j), coord_str(i, j+1)))
+            if (coord_str(i, j), coord_str(i, j-1)) in edges: edges.remove((coord_str(i, j), coord_str(i, j-1)))
+
+    for i in range(8, GRID_WIDTH):
+        for j in range(0, GRID_HEIGHT):
+            mirror = GRID_WIDTH-1-i
+
+            if (coord_str(mirror, j), coord_str(mirror, j+1)) in edges:
+                edges.append((coord_str(i, j), coord_str(i, j+1)))
+            if (coord_str(mirror, j), coord_str(mirror, j-1)) in edges:
+                edges.append((coord_str(i, j), coord_str(i, j-1)))
+
+            if (coord_str(mirror, j), coord_str(mirror+1, j)) in edges:
+                edges.append((coord_str(i, j), coord_str(i-1, j)))
+            if (coord_str(mirror, j), coord_str(mirror-1, j)) in edges:
+                edges.append((coord_str(i, j), coord_str(i+1, j)))
+
+    for edge in edges:
+        new_path.add_edge(edge[0], edge[1], 1)
+
+    # path = None
+    # global path
+    # path = new_path
+    return new_path
+
 
 
 # DEBUG

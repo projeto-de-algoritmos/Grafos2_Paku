@@ -23,28 +23,50 @@ class Ghost(Entity):
         if self.state != "eaten":
             pyxel.circ(self.posX, self.posY, 4, self.color)
             utils.rect_custom(self.posX-4, self.posY, self.posX+5, self.posY+5, self.color)
+
+            if pyxel.frame_count%30 >= 15:
+                pyxel.pset(self.posX-4, self.posY+5, self.color)
+                pyxel.pset(self.posX-2, self.posY+5, self.color)
+                pyxel.pset(self.posX, self.posY+5, self.color)
+                pyxel.pset(self.posX+2, self.posY+5, self.color)
+                pyxel.pset(self.posX+4, self.posY+5, self.color)
+            else:
+                pyxel.pset(self.posX-3, self.posY+5, self.color)
+                pyxel.pset(self.posX-1, self.posY+5, self.color)
+                pyxel.pset(self.posX+1, self.posY+5, self.color)
+                pyxel.pset(self.posX+3, self.posY+5, self.color)
+
+
         pyxel.circ(self.posX-2, self.posY-1, 1, 7)
         pyxel.circ(self.posX+2, self.posY-1, 1, 7)
         pyxel.pset(self.posX-2, self.posY-1, 0)
         pyxel.pset(self.posX+2, self.posY-1, 0)
 
         # Código para desenhar o caminho encontrado pelo Dijkstra
-        for i in self.gost_path:
-            pos = utils.coord_int(i)
-            pyxel.circ(pos[0]*15+7, pos[1]*15+7, 2, 11)
-            
-            if i == self.gost_path[-1]:
-                pyxel.circ(pos[0]*15+7, pos[1]*15+7, 1, 8)
+        if self.gost_path != []:
+            for i in self.gost_path:
+                pos = utils.coord_int(i)
+                pyxel.circ(pos[0]*15+7, pos[1]*15+7, 2, 11)
+                
+                if i == self.gost_path[-1]:
+                    pyxel.circ(pos[0]*15+7, pos[1]*15+7, 1, 8)
     
     def random_move(self):
         # CÓDIGO DE MOVIMENTAÇÃO ALETÓRIA DO FANTASMA 
         dir = ["up", "down", "right", "left"]
         dir.remove(utils.inv_dir(self.facing))
 
-        if self.check_move("up") == False: dir.remove("up")
-        if self.check_move("down") == False: dir.remove("down")
-        if self.check_move("right") == False: dir.remove("right")
-        if self.check_move("left") == False: dir.remove("left")
+        if self.check_move("up") == False: 
+            if "up" in dir: dir.remove("up")
+        if self.check_move("down") == False: 
+            if "down" in dir: dir.remove("down")
+        if self.check_move("right") == False: 
+            if "right" in dir: dir.remove("right")
+        if self.check_move("left") == False: 
+            if "left" in dir: dir.remove("left")
+
+        if dir == []:
+            dir = ["up", "down", "right", "left"]
 
         return random.choice(dir)
 
@@ -123,13 +145,19 @@ class Blinky(Ghost):
                     else:
                         self.turn(dir)
 
-        elif self.state == "eaten":
-            self.facing = None
 
-        # if self.state != "E"
-        self.move()
+        if self.state != "eaten":
+            self.move()
 
     def calc_target(self, player_node):
+
+        # for x in utils.g:
+        #     print("g")
+        #     print(x)
+        # for x in utils.path:
+        #     print("path")
+        #     print(x)
+
         visited = [] # Nós visitados
         end = player_node.get_id()
         current = self.atNode.get_id()
@@ -140,6 +168,8 @@ class Blinky(Ghost):
         
         nodeData[current]['weight'] = 0
         while len(visited)+1 < utils.path.num_nodes:
+            print(len(visited)+1)
+            print(utils.path.num_nodes)
             if current not in visited:
                 visited.append(current)
                 node_dij = utils.path.get_node(current)
@@ -154,6 +184,8 @@ class Blinky(Ghost):
 
                         heapq.heappush(pq, (nodeData[neighbour]['weight'], neighbour))
                 heapq.heapify(pq)
+
+            if pq == []: break
             _, current = heapq.heappop(pq)
             
         x = end

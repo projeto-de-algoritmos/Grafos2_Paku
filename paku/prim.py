@@ -5,8 +5,8 @@ import heapq
 import random
 
 def buildTree(tree, edges):
-    for i in range(0, 17):
-        for j in range(0, 13):
+    for i in range(0, utils.GRID_WIDTH):
+        for j in range(0, utils.GRID_HEIGHT):
             tree.add_node(utils.coord_str(i, j))
 
     for edge in edges:
@@ -15,8 +15,8 @@ def buildTree(tree, edges):
 
 def breakWalls(path: graph.Graph, edges):
 
-    for i in range(0, 17):
-        for j in range(0, 13):
+    for i in range(0, utils.GRID_WIDTH):
+        for j in range(0, utils.GRID_HEIGHT):
             node = path.node_dict[utils.coord_str(i, j)]
 
 
@@ -40,9 +40,9 @@ def breakWalls(path: graph.Graph, edges):
                     side.remove(3)
                 if(coords[1] == 0):
                     side.remove(4)
-                if(coords[0] == 16):
+                if(coords[0] == utils.GRID_WIDTH-1):
                     side.remove(1)
-                if(coords[1] == 12):
+                if(coords[1] == utils.GRID_HEIGHT-1):
                     side.remove(2)
 
                 s = random.choice(side)

@@ -26,25 +26,27 @@ class GameState:
 
             pellets_list.fill_dict()
 
-            for i in range(0, 17):
-                for j in range(0, 13):
+            for i in range(0, utils.GRID_WIDTH):
+                for j in range(0, utils.GRID_HEIGHT):
                     utils.g.add_node(utils.coord_str(i, j))
 
-            for i in range(0, 17):
-                for j in range(0, 13):
+            for i in range(0, utils.GRID_WIDTH):
+                for j in range(0, utils.GRID_HEIGHT):
                     if(i != 0):
                         utils.g.add_edge(utils.coord_str(i, j), utils.coord_str(i-1, j), random.randint(1, 20))
                     if(j != 0):
                         utils.g.add_edge(utils.coord_str(i, j), utils.coord_str(i, j-1), random.randint(1, 20))
-                    if(i != 16):
+                    if(i != utils.GRID_WIDTH-1):
                         utils.g.add_edge(utils.coord_str(i, j), utils.coord_str(i+1, j), random.randint(1, 20))
-                    if(j != 12):
+                    if(j != utils.GRID_HEIGHT-1):
                         utils.g.add_edge(utils.coord_str(i, j), utils.coord_str(i, j+1), random.randint(1, 20))
 
             # if menu var ...
-            start = utils.coord_str(random.randint(0, 16), random.randint(0, 12))
+            start = utils.coord_str(random.randint(0, utils.GRID_WIDTH-1), random.randint(0, utils.GRID_HEIGHT-1))
             utils.path, utils.edges = prim.prim_maze(utils.g, start, utils.edges)
 
+            # utils.path, utils.edges = utils.mirror(utils.path, utils.edges)
+            utils.path = utils.mirror()
 
             self.state = "prim"
                 
@@ -82,7 +84,7 @@ class GameState:
             ...
 
     def draw(self):
-        pyxel.cls(0)
+        pyxel.cls(1)
 
         if(self.state == "menu"):
             ...
@@ -108,7 +110,7 @@ class GameState:
             for i in range(0, len(utils.edges)):
                 utils.cave_paint(utils.edges[i][0], utils.edges[i][1])
             
-            pyxel.text(utils.WIDTH-40, utils.HEIGHT-20, f'PONTOS: {player1.points}', 7)
+            pyxel.text(utils.WIDTH-40, utils.HEIGHT-10, f'PONTOS: {player1.points}', 7)
             pellets_list.draw()
             player1.draw()
             blinky.draw()

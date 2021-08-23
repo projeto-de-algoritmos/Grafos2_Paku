@@ -33,4 +33,16 @@ class Player(Entity):
         self.move()
 
     def draw(self):
-        pyxel.circ(self.posX, self.posY, 4, 10)
+        if pyxel.frame_count%30 >= 15:
+            frame = 0
+        else:
+            frame = 1
+
+        if self.facing == "right":
+            pyxel.blt(self.posX-7, self.posY-8, 0, frame*16, 0, 16, 16, 0)
+        if self.facing == "left":
+            pyxel.blt(self.posX-7, self.posY-8, 0, frame*16, 16, 16, 16, 0)
+        if self.facing == "down":
+            pyxel.blt(self.posX-8, self.posY-8, 0, frame*16, 32, 16, 16, 0)
+        if self.facing == "up":
+            pyxel.blt(self.posX-8, self.posY-8, 0, frame*16, 48, 16, 16, 0)
