@@ -56,7 +56,6 @@ class GameState:
                 self.state = "start"
                 start_b.isOn = False
 
-
         if(self.state == "start"):
             pyxel.playm(0, loop=False)
 
@@ -127,7 +126,6 @@ class GameState:
             if pellet != None:
                 if pellet == 2:
                     player1.points += 40
-
                     for ghost in ghosts:
                         if ghost.state != "eaten":
                             ghost.change_state("frightened")
