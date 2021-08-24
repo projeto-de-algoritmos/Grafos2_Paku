@@ -41,8 +41,8 @@ O Paku-Paku é um jogo inspirado no Pac-Man. O objetivo do jogo é que o Paku co
 Instalar e Executar (Sistema baseado em Debian)
 
     $ pip3 install pyxel 
-    $ git clone https://github.com/projeto-de-algoritmos/Grafos1_MyTraversalCoach.git
-    $ cd Grafos2_Paku
+    $ git clone https://github.com/projeto-de-algoritmos/Grafos2_Paku.git
+    $ cd Grafos2_Paku/paku
     $ python3 game.py
 
 
