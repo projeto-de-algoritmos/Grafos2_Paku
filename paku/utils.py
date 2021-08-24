@@ -2,6 +2,7 @@ import graph
 # import player
 
 import pyxel
+import math
 
 WIDTH = 256
 HEIGHT = 196
@@ -12,6 +13,11 @@ g = graph.Graph()
 path = graph.Graph()
 edges = []
 delay = 220
+
+
+def align_fix(x, str):
+    n = len(str)
+    return (x - (n * pyxel.FONT_WIDTH) / 2)
 
 def inv_dir(dir):
     new_dir = ""
@@ -153,25 +159,25 @@ def mirror():
 
     for j in range(0, GRID_HEIGHT):
         posx = GRID_WIDTH//2
-        dead_end = 0
+        # dead_end = 0
 
-        if (coord_str(posx, j), coord_str(posx+1, j)) not in edges and (coord_str(posx+1, j), coord_str(posx, j)) not in edges: dead_end +=1
-        if (coord_str(posx, j), coord_str(posx-1, j)) not in edges and (coord_str(posx-1, j), coord_str(posx, j)) not in edges: dead_end +=1
-        if (coord_str(posx, j), coord_str(posx, j+1)) not in edges and (coord_str(posx, j+1), coord_str(posx, j)) not in edges: dead_end +=1
-        if (coord_str(posx, j), coord_str(posx, j-1)) not in edges and (coord_str(posx, j-1), coord_str(posx, j)) not in edges: dead_end +=1
+        # if (coord_str(posx, j), coord_str(posx+1, j)) not in edges and (coord_str(posx+1, j), coord_str(posx, j)) not in edges: dead_end +=1
+        # if (coord_str(posx, j), coord_str(posx-1, j)) not in edges and (coord_str(posx-1, j), coord_str(posx, j)) not in edges: dead_end +=1
+        # if (coord_str(posx, j), coord_str(posx, j+1)) not in edges and (coord_str(posx, j+1), coord_str(posx, j)) not in edges: dead_end +=1
+        # if (coord_str(posx, j), coord_str(posx, j-1)) not in edges and (coord_str(posx, j-1), coord_str(posx, j)) not in edges: dead_end +=1
 
-        if dead_end >= 3:
-            if j!= GRID_HEIGHT-1:
-                if (coord_str(posx, j), coord_str(posx, j+1)) not in edges: 
-                    edges.append((coord_str(posx, j), coord_str(posx, j+1)))
-                if (coord_str(posx, j+1), coord_str(posx, j)) not in edges: 
-                    edges.append((coord_str(posx, j+1), coord_str(posx, j)))
+        # if dead_end >= 3:
+        if j!= GRID_HEIGHT-1:
+            if (coord_str(posx, j), coord_str(posx, j+1)) not in edges: 
+                edges.append((coord_str(posx, j), coord_str(posx, j+1)))
+            if (coord_str(posx, j+1), coord_str(posx, j)) not in edges: 
+                edges.append((coord_str(posx, j+1), coord_str(posx, j)))
 
-            if j!= 0:
-                if (coord_str(posx, j), coord_str(posx, j-1)) not in edges: 
-                    edges.append((coord_str(posx, j), coord_str(posx, j-1)))
-                if (coord_str(posx, j-1), coord_str(posx, j)) not in edges: 
-                    edges.append((coord_str(posx, j-1), coord_str(posx, j)))
+        if j!= 0:
+            if (coord_str(posx, j), coord_str(posx, j-1)) not in edges: 
+                edges.append((coord_str(posx, j), coord_str(posx, j-1)))
+            if (coord_str(posx, j-1), coord_str(posx, j)) not in edges: 
+                edges.append((coord_str(posx, j-1), coord_str(posx, j)))
 
     for edge in edges:
         new_path.add_edge(edge[0], edge[1], 1)

@@ -1,8 +1,15 @@
 from entity import Entity
 import utils
 
+import time
 import pyxel
 import random
+import heapq
+
+# Scatter WONT DO
+# Chase
+# Frightened
+# Eaten
 
 class Ghost(Entity):
     def __init__(self, x, y) -> None:
@@ -15,6 +22,15 @@ class Ghost(Entity):
         self.color = 0
         self.base_color = 0
         self.gost_path = []
+        self.countdown = 0
+
+    def update(self):
+        if self.state == "frightened":
+            if round(time.time()) - self.countdown == 15:
+                self.change_state("chase")
+        if self.state == "eaten":
+            if round(time.time()) - self.countdown == 10:
+                self.change_state("chase")
       
     def draw(self):
         if self.state != "eaten":
@@ -38,18 +54,8 @@ class Ghost(Entity):
         pyxel.circ(self.posX+2, self.posY-1, 1, 7)
         pyxel.pset(self.posX-2, self.posY-1, 0)
         pyxel.pset(self.posX+2, self.posY-1, 0)
-
-        # Código para desenhar o caminho encontrado pelo Dijkstra
-        # if self.gost_path != []:
-        #     for i in self.gost_path:
-        #         pos = utils.coord_int(i)
-        #         pyxel.circ(pos[0]*15+7, pos[1]*15+7, 2, 11)
-                
-        #         if i == self.gost_path[-1]:
-        #             pyxel.circ(pos[0]*15+7, pos[1]*15+7, 1, 8)
     
     def random_move(self):
-        # CÓDIGO DE MOVIMENTAÇÃO ALETÓRIA DO FANTASMA 
         dir = self.directions()
 
         if dir == []:
@@ -67,8 +73,24 @@ class Ghost(Entity):
         if state == "frightened":
             self.facing = utils.inv_dir(self.facing)
             self.color = 12
+            self.countdown = round(time.time())
 
         if state == "eaten":
             self.posX = self.home[0]
             self.posY = self.home[1]
             self.color = 0
+            self.countdown = round(time.time())
+
+            # self.countdown = pyxel.frame_count()
+            
+    def reset(self, x, y):
+        self.state = "chase"
+        self.posX = utils.align_in_grid(x) + 1
+        self.posY = utils.align_in_grid(y) + 1
+        self.home = [self.posX, self.posY]
+        self.target = None
+        self.color = 0
+        self.base_color = 0
+        self.countdown = 0                    
+
+

@@ -8,9 +8,12 @@ class Blinky(Ghost):
         self.color = 8
         self.base_color = 8
         self.facing = "right"
+        self.gost_path = []
 
     
     def update(self, player_node, _):
+        super().update()
+
         self.atNode = utils.get_node_in_grid(self.posX, self.posY)
         
         if (self.posX+7)%15 == 0 and (self.posY+7)%15 == 0:
@@ -36,6 +39,10 @@ class Blinky(Ghost):
                         dir = "down"
             
                 if self.state == "chase":
+                    # print(f"Blinky: {self.state}")
+                    # print(dir)
+                    # print(self.directions())
+                    # print("")
 
                     if dir in self.directions():
                         self.turn(dir)
@@ -44,11 +51,16 @@ class Blinky(Ghost):
 
                 elif self.state == "frightened":
                     dir = utils.inv_dir(dir)
-            
+                    # print(f"Blinky: {self.state}")
+                    # print(dir)
+                    # print(self.directions())
+                    # print("")
                     
                     if dir in self.directions():
+                        # print("random")
                         self.turn(dir)
                     else:
+                        # print("random")
                         self.turn(self.random_move())
             else:
                 self.turn(self.random_move())
@@ -69,7 +81,8 @@ class Blinky(Ghost):
         
         nodeData[current]['weight'] = 0
         while len(visited)+1 < utils.path.num_nodes:
-
+            # print(len(visited)+1)
+            # print(utils.path.num_nodes)
             if current not in visited:
                 visited.append(current)
                 node_dij = utils.path.get_node(current)
@@ -93,3 +106,10 @@ class Blinky(Ghost):
         while x != self.atNode.get_id():
             self.gost_path.append(x)
             x = nodeData[x]['parent']
+
+    def reset(self, x, y):
+        super().reset(x, y)
+        self.color = 8
+        self.base_color = 8
+        self.facing = "right"
+        self.gost_path = []

@@ -9,6 +9,7 @@ class Clyde(Ghost):
         self.facing = "left"
 
     def update(self, player_node, _):
+        super().update()
         self.atNode = utils.get_node_in_grid(self.posX, self.posY)
         
         if (self.posX+7)%15 == 0 and (self.posY+7)%15 == 0:
@@ -19,16 +20,11 @@ class Clyde(Ghost):
         if self.canTurn: 
             self.turn(self.random_move())
 
-        # CÓDIGO DE MOVIMENTAÇÃO ALETÓRIA DO FANTASMA
-        
-        # if self.canTurn:
-        #     dir = ["up", "down", "right", "left"]
-
-        #     new_dir.remove(utils.inv_dir(self.facing))
-
-        #     choice = random.choice(dir)
-        #     self.turn(choice)
-
-
+       
         if self.state != "eaten":
             self.move()
+    def reset(self, x, y):
+        super().reset(x, y)
+        self.color = 9
+        self.base_color = 9
+        self.facing = "left"

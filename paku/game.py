@@ -10,7 +10,7 @@ class Game:
         pyxel.load("assets.pyxres")
 
         self.gamestate = gs.GameState()
-        self.gamestate.state = "start"
+        self.gamestate.state = "menu"
 
         pyxel.run(self.update, self.draw)
 

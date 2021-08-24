@@ -9,6 +9,8 @@ class Pinky(Ghost):
         self.facing = "left"
 
     def update(self, player_node, player_facing):
+        super().update()
+
         self.atNode = utils.get_node_in_grid(self.posX, self.posY)
         
         if (self.posX+7)%15 == 0 and (self.posY+7)%15 == 0:
@@ -60,8 +62,17 @@ class Pinky(Ghost):
                 ghost_pos[0] -= 1
                 
             dist = (target[0] - ghost_pos[0])**2 + (target[1] - ghost_pos[1])**2
+            # print(f"dir: {dir} - dist: {dist}")
             if min > dist:
                 min = dist
                 go_to = dir
 
+        # self.turn(dir)                
         return go_to
+
+    def reset(self, x, y):
+        super().reset(x, y)
+        self.color = 14
+        self.base_color = 14
+        self.facing = "left"
+        
