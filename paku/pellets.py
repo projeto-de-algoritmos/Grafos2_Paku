@@ -26,3 +26,6 @@ class Pellets:
                 pyxel.pset(utils.align_in_grid(x[0][0]), utils.align_in_grid(x[0][1]), 9)
             else:
                 pyxel.circ(utils.align_in_grid(x[0][0]), utils.align_in_grid(x[0][1]), 2, 9)
+    
+    def reset(self):
+        self.pellets_dict.clear()

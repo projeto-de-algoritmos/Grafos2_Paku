@@ -57,3 +57,7 @@ class Graph:
     # Retorna dicionário com nós
     def get_nodes(self):
         return self.node_dict.keys()
+
+    def reset(self):
+        self.node_dict.clear()
+        self.num_nodes = 0
