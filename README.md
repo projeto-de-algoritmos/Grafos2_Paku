@@ -1,7 +1,7 @@
 # Paku-Paku
 
 **Número da Lista**: 2<br>
-**Conteúdo da Disciplina**: Grafos 2<br>
+**Conteúdo da Disciplina**: Final<br>
 
 ## Alunos
 |Matrícula | Aluno |
